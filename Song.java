@@ -1,15 +1,13 @@
 import java.util.ArrayList;
 
-class Song implements Rateable {
-    public String title;
-    public int duration;  // in seconds
-    public String genre;
-    public Artist artist;
-    public ArrayList<Integer> ratings;
+public class Song implements Rateable {
+    private String title;
+    private String genre;
+    private Artist artist;
+    private ArrayList<Integer> ratings;
 
-    public Song(String title, int duration, String genre, Artist artist) {
+    public Song(String title, String genre, Artist artist) {
         this.title = title;
-        this.duration = duration;
         this.genre = genre;
         this.artist = artist;
         this.ratings = new ArrayList<>();
@@ -19,17 +17,27 @@ class Song implements Rateable {
         return title;
     }
 
-    // Add rating to song
-    @Override
-    public void addRating(int rating) {
-        if (rating >= 1 && rating <= 5) {
-            ratings.add(rating);
-        } else {
-            System.out.println("Rating must be between 1 and 5.");
-        }
+    public void setTitle(String newTitle) {
+        this.title = newTitle;
     }
 
-    // Get average rating of song
+    public String getGenre() {
+        return genre;
+    }
+
+    public void setGenre(String newGenre) {
+        this.genre = newGenre;
+    }
+
+    @Override
+    public void addRating(int rating) {
+        if (rating >= 1 && rating <= 10) {
+            ratings.add(rating);
+        } else {
+            System.out.println("Rating must be between 1 and 10.");
+        }
+    }
+    
     @Override
     public double getAverageRating() {
         if (ratings.isEmpty()) return 0;
@@ -40,42 +48,7 @@ class Song implements Rateable {
         return sum / (double) ratings.size();
     }
 
-    // Getters and setters
-	public int getDuration() {
-		return duration;
-	}
-
-	public void setDuration(int duration) {
-		this.duration = duration;
-	}
-
-	public String getGenre() {
-		return genre;
-	}
-
-	public void setGenre(String genre) {
-		this.genre = genre;
-	}
-
-	public Artist getArtist() {
-		return artist;
-	}
-
-	public void setArtist(Artist artist) {
-		this.artist = artist;
-	}
-
-	public ArrayList<Integer> getRatings() {
-		return ratings;
-	}
-
-	public void setRatings(ArrayList<Integer> ratings) {
-		this.ratings = ratings;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-    
-    
+    public void displaySongInfo() {
+        System.out.println(artist.getName() + " | " + artist.getAlbumTitle(this) + " | " + title + " | " + genre + " | " + getAverageRating());
+    }
 }
