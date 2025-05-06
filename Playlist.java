@@ -9,15 +9,31 @@ public class Playlist {
         this.songs = new ArrayList<>();
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String newTitle) {
+        this.title = newTitle;
+    }
+    
+    public ArrayList<Song> getSongs() {
+        return songs;
+    }
+    
     public void addSong(Song song) {
         songs.add(song);
     }
 
-    public void removeSong(Song song) {
-        songs.remove(song);
+    public void removeSong(String songTitle) {
+        songs.removeIf(song -> song.getTitle().equalsIgnoreCase(songTitle));
     }
 
-    public ArrayList<Song> getSongs() {
-        return songs;
+    public void displayPlaylistInfo() {
+        System.out.println("Playlist: " + title);
+        for (Song song : songs) {
+            song.displaySongInfo();
+        }
     }
 }
+
