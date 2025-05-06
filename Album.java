@@ -1,96 +1,66 @@
 import java.util.ArrayList;
 
-class Album implements Rateable {
-    public String title;
-    public String description;
-    public Artist artist;
-    public ArrayList<Song> songs;
-    public ArrayList<Integer> ratings;
+public class Album {
+    private String title;
+    private Artist artist;
+    private ArrayList<Song> songs;
 
-    public Album(String title, String description, Artist artist) {
+    public Album(String title, Artist artist) {
         this.title = title;
-        this.description = description;
         this.artist = artist;
         this.songs = new ArrayList<>();
-        this.ratings = new ArrayList<>();
     }
 
-    // Add song to an album
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String newTitle) {
+        this.title = newTitle;
+    }
+
     public void addSong(Song song) {
         songs.add(song);
     }
-    
-    // Remove song from an album
+
     public void removeSong(Song song) {
-        if (songs.contains(song)) {
-            songs.remove(song);
-            System.out.println("Song " + song.getTitle() + " has been removed from the album " + this.title);
-        } else {
-            System.out.println("Song not found in the album.");
-        }
+        songs.remove(song);
     }
 
     public ArrayList<Song> getSongs() {
         return songs;
     }
-
-    // Add rating to an album
-    @Override
-    public void addRating(int rating) {
-        if (rating >= 1 && rating <= 5) {
-            ratings.add(rating);
+    
+ // Method to remove a song by its title
+    public void removeSong(String songTitle) {
+        Song songToRemove = null;
+        for (Song song : songs) {
+            if (song.getTitle().equalsIgnoreCase(songTitle)) {
+                songToRemove = song;
+                break;
+            }
+        }
+        if (songToRemove != null) {
+            songs.remove(songToRemove);
+            System.out.println("Song '" + songTitle + "' removed from the album.");
         } else {
-            System.out.println("Rating must be between 1 and 5.");
+            System.out.println("Song not found.");
         }
     }
 
-    // Average rating of an album
-    @Override
-    public double getAverageRating() {
-        if (ratings.isEmpty()) return 0;
-        int sum = 0;
-        for (int rating : ratings) {
-            sum += rating;
+    // Method to get a song by its title
+    public Song getSongByTitle(String title) {
+        for (Song song : songs) {
+            if (song.getTitle().equalsIgnoreCase(title)) {
+                return song;
+            }
         }
-        return sum / (double) ratings.size();
+        return null; // Return null if no song is found with that title
     }
 
-    // Getters and setters
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public Artist getArtist() {
-		return artist;
-	}
-
-	public void setArtist(Artist artist) {
-		this.artist = artist;
-	}
-
-	public ArrayList<Integer> getRatings() {
-		return ratings;
-	}
-
-	public void setRatings(ArrayList<Integer> ratings) {
-		this.ratings = ratings;
-	}
-
-	public void setSongs(ArrayList<Song> songs) {
-		this.songs = songs;
-	}
-    
-    
+    public void displayAlbumInfo() {
+        for (Song song : songs) {
+            song.displaySongInfo();
+        }
+    }
 }
