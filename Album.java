@@ -31,7 +31,7 @@ public class Album {
         return songs;
     }
     
- // Method to remove a song by its title
+    // Method to remove songs from an album
     public void removeSong(String songTitle) {
         Song songToRemove = null;
         for (Song song : songs) {
@@ -43,7 +43,8 @@ public class Album {
         if (songToRemove != null) {
             songs.remove(songToRemove);
             System.out.println("Song '" + songTitle + "' removed from the album.");
-        } else {
+        } 
+        else {
             System.out.println("Song not found.");
         }
     }
@@ -55,12 +56,23 @@ public class Album {
                 return song;
             }
         }
-        return null; // Return null if no song is found with that title
+        return null; 
     }
-
+    
+    // Method to display album info
     public void displayAlbumInfo() {
+        System.out.printf("%-20s| %-20s| %-20s| %-20s| %-20s%n", "Artist", "Album", "Song", "Genre", "Rating");
+        System.out.println("-----------------------------------------------------------------------------------------------------------");
+
         for (Song song : songs) {
-            song.displaySongInfo();
+            System.out.printf("%-20s| %-20s| %-20s| %-20s| %-20s%n", 
+                artist.getName(), 
+                this.getTitle(), 
+                song.getTitle(), 
+                song.getGenre(), 
+                song.getAverageRating() 
+            );
         }
     }
+
 }
