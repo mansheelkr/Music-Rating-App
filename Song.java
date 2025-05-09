@@ -1,10 +1,10 @@
 import java.util.ArrayList;
 
-public class Song implements Rateable {
+public class Song {
     private String title;
     private String genre;
     private Artist artist;
-    private ArrayList<Integer> ratings;
+    private ArrayList<Float> ratings;
 
     public Song(String title, String genre, Artist artist) {
         this.title = title;
@@ -12,8 +12,25 @@ public class Song implements Rateable {
         this.artist = artist;
         this.ratings = new ArrayList<>();
     }
+    
+    // Getters and setters
+    public Artist getArtist() {
+		return artist;
+	}
 
-    public String getTitle() {
+	public void setArtist(Artist artist) {
+		this.artist = artist;
+	}
+
+	public ArrayList<Float> getRatings() {
+		return ratings;
+	}
+
+	public void setRatings(ArrayList<Float> ratings) {
+		this.ratings = ratings;
+	}
+
+	public String getTitle() {
         return title;
     }
 
@@ -28,9 +45,9 @@ public class Song implements Rateable {
     public void setGenre(String newGenre) {
         this.genre = newGenre;
     }
-
-    @Override
-    public void addRating(int rating) {
+    
+    // Method to add song rating
+    public void addRating(float rating) {
         if (rating >= 1 && rating <= 10) {
             ratings.add(rating);
         } else {
@@ -38,17 +55,29 @@ public class Song implements Rateable {
         }
     }
     
-    @Override
+    // Method to calculate average song rating
     public double getAverageRating() {
         if (ratings.isEmpty()) return 0;
-        int sum = 0;
-        for (int rating : ratings) {
+        float sum = 0;
+        for (float rating : ratings) {
             sum += rating;
         }
-        return sum / (double) ratings.size();
+        double average = sum / ratings.size();
+        
+        return Double.parseDouble(String.format("%.2f", average));
     }
-
+    
+    // Method to display song info
     public void displaySongInfo() {
-        System.out.println(artist.getName() + " | " + artist.getAlbumTitle(this) + " | " + title + " | " + genre + " | " + getAverageRating());
+        System.out.printf("%-20s| %-20s| %-20s| %-20s| %-20s%n", "Artist", "Album", "Song", "Genre", "Rating");
+        System.out.println("-----------------------------------------------------------------------------------------------------------");
+
+        System.out.printf("%-20s| %-20s| %-20s| %-20s| %-20s%n", 
+            artist.getName(), 
+            artist.getAlbumTitle(this), 
+            title, 
+            genre, 
+            getAverageRating() 
+        );
     }
 }
