@@ -28,12 +28,24 @@ public class Playlist {
     public void removeSong(String songTitle) {
         songs.removeIf(song -> song.getTitle().equalsIgnoreCase(songTitle));
     }
-
+    
+    // Method to display songs in playlist
     public void displayPlaylistInfo() {
         System.out.println("Playlist: " + title);
+        
+        System.out.printf("%-20s| %-20s| %-20s| %-20s| %-20s%n", "Artist", "Album", "Song", "Genre", "Rating");
+        System.out.println("-----------------------------------------------------------------------------------------------------------");
+
         for (Song song : songs) {
-            song.displaySongInfo();
+            System.out.printf("%-20s| %-20s| %-20s| %-20s| %-20s%n", 
+                song.getArtist().getName(), 
+                song.getArtist().getAlbumTitle(song), 
+                song.getTitle(),
+                song.getGenre(),
+                song.getAverageRating() 
+            );
         }
     }
+
 }
 
