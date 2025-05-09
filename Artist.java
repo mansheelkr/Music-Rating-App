@@ -5,79 +5,81 @@ public class Artist {
     private String name;
     private ArrayList<Album> albums;
 
-    // Static list to store all artists
+    // Store all artists
     private static ArrayList<Artist> allArtists = new ArrayList<>();
 
     public Artist(String name) {
         this.name = name;
         this.albums = new ArrayList<>();
-        allArtists.add(this); // Add the current artist to the global list
+        allArtists.add(this); 
     }
 
     public String getName() {
         return name;
     }
     
-    // Method to return the album title that contains the song
-    public String getAlbumTitle(Song song) {
-        for (Album album : albums) {
-            if (album.getSongs().contains(song)) {
-                return album.getTitle(); // Return the title of the album that contains the song
-            }
-        }
-        return "Unknown Album"; // If no album contains the song, return this
+    public static ArrayList<Artist> getAllArtists() {
+        return allArtists;
     }
 
     public ArrayList<Album> getAlbums() {
         return albums;
     }
-
+    
+ // Method to return the album title that contains the song
+    public String getAlbumTitle(Song song) {
+        for (Album album : albums) {
+            if (album.getSongs().contains(song)) {
+                return album.getTitle(); 
+            }
+        }
+        return "Unknown Album"; 
+    }
+    
+    // Method to create an album
     public void createAlbum(String title) {
-        // Create an album
         Album album = new Album(title, this);
         albums.add(album);
 
-        // Ask for songs and add them to the album
         Scanner scanner = new Scanner(System.in);
         System.out.println("What is the name, and genre of the songs?");
         while (true) {
-            System.out.print("Enter song title (or 'done' to finish): ");
+            System.out.print("Enter song title (or 'done' to finish adding songs): ");
             String songTitle = scanner.nextLine();
             if (songTitle.equalsIgnoreCase("done")) break;
 
             System.out.print("Enter genre for song " + songTitle + ": ");
             String genre = scanner.nextLine();
+            System.out.println();
 
-            // Create and add the song to the album
             Song song = new Song(songTitle, genre, this);
             album.addSong(song);
         }
 
-        // After adding songs, display the album
-        displayArtistCatalog(); // Display the updated catalog
+        System.out.println();
+        album.displayAlbumInfo();
     }
 
-    // Method to display the artist's catalog
+    // Method to display the artist's music catalog
     public void displayArtistCatalog() {
         if (albums.isEmpty()) {
-            System.out.println(name + " has no albums yet.");
+            System.out.println("No albums found.");
             return;
         }
 
-        System.out.println("Artist: " + name);
-        System.out.println("Albums:");
+        System.out.println();
+        System.out.printf("%-20s| %-20s| %-20s| %-20s| %-20s%n", "Artist", "Album", "Song", "Genre", "Rating");
+        System.out.println("-----------------------------------------------------------------------------------------------------------");
 
-        // Display information for each album
         for (Album album : albums) {
-            System.out.println("Album: " + album.getTitle());
-            
-            // Display all songs in the album
-            if (album.getSongs().isEmpty()) {
-                System.out.println("  No songs in this album.");
-            } else {
-                for (Song song : album.getSongs()) {
-                    System.out.println("  Song: " + song.getTitle() + " | Genre: " + song.getGenre() + " | Rating: " + song.getAverageRating());
-                }
+            for (Song song : album.getSongs()) {
+                System.out.printf("%-20s| %-20s| %-20s| %-20s| %-20s%n", 
+                    name, 
+                    album.getTitle(),
+                    song.getTitle(), 
+                    song.getGenre(), 
+                    song.getAverageRating()
+                );
             }
         }
     }
@@ -86,15 +88,22 @@ public class Artist {
     public void searchMusicCatalog(String query) {
         boolean found = false;
 
-        // Check for album match first
+        System.out.printf("%-20s| %-20s| %-20s| %-20s| %-20s%n", "Artist", "Album", "Song", "Genre", "Rating");
+        System.out.println("-----------------------------------------------------------------------------------------------------------");
+
         for (Album album : albums) {
             if (album.getTitle().equalsIgnoreCase(query)) {
-                System.out.println("Album found: " + album.getTitle());
                 for (Song song : album.getSongs()) {
-                    System.out.println("  Song: " + song.getTitle() + " | Genre: " + song.getGenre() + " | Rating: N/A");
+                    System.out.printf("%-20s| %-20s| %-20s| %-20s| %-20s%n", 
+                        name,
+                        album.getTitle(), 
+                        song.getTitle(), 
+                        song.getGenre(), 
+                        song.getAverageRating() 
+                    );
                 }
                 found = true;
-                break;  // No need to continue searching for albums if one is found
+                break;  
             }
         }
 
@@ -102,49 +111,57 @@ public class Artist {
         if (!found) {
             for (Album album : albums) {
                 for (Song song : album.getSongs()) {
-                    if (song.getTitle().equalsIgnoreCase(query)) {
-                        System.out.println("Song found: " + song.getTitle());
-                        System.out.println("Artist: " + name + " | Album: " + album.getTitle() + " | Genre: " + song.getGenre() + " | Rating: N/A");
+                    if (song.getTitle().equalsIgnoreCase(query)) {        
+                        System.out.printf("%-20s| %-20s| %-20s| %-20s| %-20s%n", 
+                            name, 
+                            album.getTitle(),
+                            song.getTitle(),
+                            song.getGenre(), 
+                            song.getAverageRating() 
+                        );
                         found = true;
-                        break;  // Exit the loop once the song is found
+                        break;  
                     }
                 }
-                if (found) break; // Exit the outer loop if the song is found
+                if (found) break;
             }
         }
 
         if (!found) {
+        	System.out.println();
             System.out.println("No matching album or song found for: " + query);
         }
     }
     
-    // Method to view an album and allow edits
+    // Method to view an album and edit album
     public void viewAlbum() {
         Scanner scanner = new Scanner(System.in);
-        // Display available albums
+        
+        System.out.println();
         System.out.println("Which album would you like to view?");
         for (int i = 0; i < albums.size(); i++) {
             System.out.println((i + 1) + ") " + albums.get(i).getTitle());
         }
 
         int albumChoice = scanner.nextInt();
-        scanner.nextLine(); // consume the newline
+        scanner.nextLine(); 
         if (albumChoice < 1 || albumChoice > albums.size()) {
             System.out.println("Invalid choice.");
             return;
         }
 
         Album selectedAlbum = albums.get(albumChoice - 1);
+        System.out.println();
         System.out.println("You are viewing the album: " + selectedAlbum.getTitle());
-
-        // Display the songs in the album
         selectedAlbum.displayAlbumInfo();
 
-        // Allow the artist to edit the album
+        // Allow the artist to edit album
+        System.out.println();
         System.out.println("Do you want to edit this album? (yes/no)");
         String editChoice = scanner.nextLine().toLowerCase();
 
         if (editChoice.equals("yes")) {
+        	System.out.println();
             System.out.println("What would you like to do?");
             System.out.println("a) Edit album name");
             System.out.println("b) Add a song to the album");
@@ -155,23 +172,50 @@ public class Artist {
 
             switch (option) {
                 case "a":
+                	System.out.println();
                     System.out.print("Enter the new album name: ");
                     String newAlbumName = scanner.nextLine();
-                    selectedAlbum.setTitle(newAlbumName);  // Update album name
+                    selectedAlbum.setTitle(newAlbumName);  
+                    System.out.println();
+                    selectedAlbum.displayAlbumInfo();
                     break;
                 case "b":
-                    System.out.print("Enter the song name: ");
-                    String newSongTitle = scanner.nextLine();
-                    System.out.print("Enter the genre for the song: ");
-                    String newSongGenre = scanner.nextLine();
-                    selectedAlbum.addSong(new Song(newSongTitle, newSongGenre, this));  // Add new song
+                    System.out.println();
+                    // Loop to add multiple songs
+                    while (true) {
+                        System.out.print("Enter the song name to add (or type 'done' to finish): ");
+                        String newSongTitle = scanner.nextLine();
+                        if (newSongTitle.equalsIgnoreCase("done")) {
+                            break;  
+                        }
+                        System.out.print("Enter the genre for the song: ");
+                        String newSongGenre = scanner.nextLine();
+
+                        selectedAlbum.addSong(new Song(newSongTitle, newSongGenre, this));
+                        System.out.println("Song added: " + newSongTitle);
+                        System.out.println();
+                    }
+                    System.out.println();
+                    selectedAlbum.displayAlbumInfo();
                     break;
                 case "c":
-                    System.out.print("Enter the song name to remove: ");
-                    String songToRemove = scanner.nextLine();
-                    selectedAlbum.removeSong(songToRemove);  // Remove song from album
+                    System.out.println();
+                    // Loop to remove multiple songs
+                    while (true) {
+                        System.out.print("Enter the song name to remove (or type 'done' to finish): ");
+                        String songToRemove = scanner.nextLine();
+                        if (songToRemove.equalsIgnoreCase("done")) {
+                            break;  
+                        }
+                        selectedAlbum.removeSong(songToRemove);  
+                        System.out.println("Song removed: " + songToRemove);
+                        System.out.println();
+                    }
+                    System.out.println();
+                    selectedAlbum.displayAlbumInfo();
                     break;
                 case "d":
+                	System.out.println();
                     System.out.print("Enter the song name to edit: ");
                     String songToEdit = scanner.nextLine();
                     Song song = selectedAlbum.getSongByTitle(songToEdit);
@@ -181,7 +225,10 @@ public class Artist {
                         System.out.print("Enter the new genre: ");
                         String newGenre = scanner.nextLine();
                         song.setTitle(newSongName);
-                        song.setGenre(newGenre);  // Edit song details
+                        song.setGenre(newGenre);  
+                        
+                        System.out.println();
+                        selectedAlbum.displayAlbumInfo();
                     } else {
                         System.out.println("Song not found.");
                     }
@@ -191,13 +238,8 @@ public class Artist {
                     break;
             }
 
-            // After editing, display updated album info
-            selectedAlbum.displayAlbumInfo();
+            
         }
     }
 
-    // Static method to get all artists
-    public static ArrayList<Artist> getAllArtists() {
-        return allArtists;
-    }
 }
