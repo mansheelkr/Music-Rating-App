@@ -139,6 +139,10 @@ public class Artist {
         
         System.out.println();
         System.out.println("Which album would you like to view?");
+        if (albums.size() == 0) {
+            System.out.println("No albums available!");
+            return;
+        }
         for (int i = 0; i < albums.size(); i++) {
             System.out.println((i + 1) + ") " + albums.get(i).getTitle());
         }

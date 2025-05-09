@@ -105,12 +105,17 @@ class Listener {
 
     // Method to create a new playlist
     public void createPlaylist(String playlistName) {
+
         Scanner scanner = new Scanner(System.in);
 
         Playlist newPlaylist = new Playlist(playlistName);
         playlists.add(newPlaylist);
 
-        System.out.println();
+        System.out.println("Current songs: ");
+
+        browseMusic();
+
+
         System.out.println("What songs would you like to add to this playlist? (Enter 'done' when finished)");
 
         while (true) {

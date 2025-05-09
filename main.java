@@ -62,7 +62,7 @@ public class main {
                             break;
                         case 4:
                         	System.out.println();
-                            System.out.print("Enter playlist name: ");
+                            System.out.print("Enter new playlist name: ");
                             String playlistName = scanner.nextLine();
                             listener.createPlaylist(playlistName);
                             break;
@@ -79,7 +79,7 @@ public class main {
 
                     // Return to menu after each option
                     System.out.println();
-                    System.out.println("Press 0 to return to the menu.");
+                    System.out.println("Input 0 to return to the main menu or any other character to exit.");
                     String returnToMenu = scanner.nextLine();
                     if (returnToMenu.equals("0")) {
                         continue; // Go back to the main menu
@@ -145,7 +145,7 @@ public class main {
                     }
 
                     System.out.println();
-                    System.out.println("Press 0 to return to the menu or press any key to log out.");
+                    System.out.println("Input 0 to return to the main menu or any other character to exit.");
                     String returnToMenu = scanner.nextLine();
                     if (returnToMenu.equals("0")) {
                         continue; // Go back to the main menu
