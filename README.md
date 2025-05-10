@@ -1,6 +1,8 @@
 # Tune Vibes
 A command-line based music-sharing and rating application which allows two types of users, artists and listeners, to interact. It simulates the core functionality of a music platform by allowing content creation, exploration, and feedback.
+
 Artists can create and manage albums (collections of songs grouped under a common title). Each song has a title, genre, and rating to be indexed more easily. Albums form the artist's music catalog, a personal archive of all of their uploaded content. Artists can edit or delete content from this catalog and receive feedback through numeric song ratings submitted by listeners.
+
 Listeners can browse or search the platform's entire music library, rate songs on a 1-10 scale, and create playlists (user-customized collections of songs based on preferences).
 
 ## Authors
